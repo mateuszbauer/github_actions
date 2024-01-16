@@ -1,0 +1,19 @@
+name: Matmul
+run-name: ${{ github.actor }} is running unit tests
+on: [push]
+jobs:
+  Run-unit-tests:
+    runs-on: self-hosted
+    steps:
+      - run: echo "The job was triggered by a ${{ github.event_name }} event." 
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: |
+          cd matmul/
+          mkdir build/ && cd build/
+          cmake .. -DCMAKE_BUILD_TYPE=Debug
+          make -j 2
+          cd tests/ut/
+          ./matmul_unit_tests
+      - run: echo "This job's status is ${{ job.status }}."
+
